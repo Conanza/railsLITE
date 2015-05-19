@@ -11,7 +11,9 @@ module Phase3
 
     def render(template_name)
       controller_name = self.class.name.underscore
+      # find and get template
       template = File.read("views\/#{controller_name}\/#{template_name}.html.erb")
+      # process/enable erb if any
       erb_template = ERB.new(template)
 
       # any ivars in the current instance will be available with binding
