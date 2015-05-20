@@ -18,6 +18,20 @@ class Params
 
   class AttributeNotFoundError < ArgumentError; end;
 
+  def permit(*keys)
+    @permitted_params ||= {}
+
+    keys.each { |key| @permitted_params[key] = @params[key] }
+  end
+
+  def permitted?(key)
+    @permitted_params.has_key?(key)
+  end
+
+  def require(key)
+    raise AttributeNotFoundError unless @params[key]
+  end
+
   private
 
     def parse_www_encoded_form(www_encoded_form)

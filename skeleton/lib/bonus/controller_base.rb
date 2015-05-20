@@ -2,6 +2,7 @@ require 'active_support'
 require 'active_support/core_ext'
 require 'erb'
 require 'active_support/inflector'
+require_relative 'flash'
 require_relative 'session'
 require_relative 'params'
 require_relative 'router'
@@ -47,6 +48,10 @@ class ControllerBase
 
   def session
     @session ||= Session.new(@req)
+  end
+
+  def flash
+    @flash ||= Flash.new(@req)
   end
 
   def invoke_action(name)

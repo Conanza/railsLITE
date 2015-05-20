@@ -78,41 +78,41 @@ describe Params do
     end
   end
 
-  # describe "strong parameters" do
-  #   describe "#permit" do
-  #     it "allows the permitting of multiple attributes" do
-  #       req.query_string = "key=val&key2=val2&key3=val3"
-  #       params = Phase5::Params.new(req)
-  #       params.permit("key", "key2")
-  #       expect(params.permitted?("key")).to be_truthy
-  #       expect(params.permitted?("key2")).to be_truthy
-  #       expect(params.permitted?("key3")).to be_falsey
-  #     end
-  #
-  #     it "collects up permitted keys across multiple calls" do
-  #       req.query_string = "key=val&key2=val2&key3=val3"
-  #       params = Phase5::Params.new(req)
-  #       params.permit("key")
-  #       params.permit("key2")
-  #       expect(params.permitted?("key")).to be_truthy
-  #       expect(params.permitted?("key2")).to be_truthy
-  #       expect(params.permitted?("key3")).to be_falsey
-  #     end
-  #   end
-  #
-  #   describe "#require" do
-  #     it "throws an error if the attribute does not exist" do
-  #       req.query_string = "key=val"
-  #       params = Phase5::Params.new(req)
-  #       expect { params.require("key") }.to_not raise_error
-  #       expect { params.require("key2") }.to raise_error(Phase5::Params::AttributeNotFoundError)
-  #     end
-  #   end
-  #
+  describe "strong parameters" do
+    describe "#permit" do
+      it "allows the permitting of multiple attributes" do
+        req.query_string = "key=val&key2=val2&key3=val3"
+        params = Params.new(req)
+        params.permit("key", "key2")
+        expect(params.permitted?("key")).to be_truthy
+        expect(params.permitted?("key2")).to be_truthy
+        expect(params.permitted?("key3")).to be_falsey
+      end
+
+      it "collects up permitted keys across multiple calls" do
+        req.query_string = "key=val&key2=val2&key3=val3"
+        params = Params.new(req)
+        params.permit("key")
+        params.permit("key2")
+        expect(params.permitted?("key")).to be_truthy
+        expect(params.permitted?("key2")).to be_truthy
+        expect(params.permitted?("key3")).to be_falsey
+      end
+    end
+
+    describe "#require" do
+      it "throws an error if the attribute does not exist" do
+        req.query_string = "key=val"
+        params = Params.new(req)
+        expect { params.require("key") }.to_not raise_error
+        expect { params.require("key2") }.to raise_error(Params::AttributeNotFoundError)
+      end
+    end
+
   #   describe "interaction with ARLite models" do
   #     it "throws a ForbiddenAttributesError if mass assignment is attempted with unpermitted attributes" do
   #
   #     end
   #   end
-  # end
+  end
 end
