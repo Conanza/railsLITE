@@ -41,29 +41,26 @@ module Phase5
         main_key = parsed_keys.shift
         pkeys_length = parsed_keys.length
 
-        builds = []
+        levels = []
         if pkeys_length.zero?
-          builds << val
+          levels << val
         else
           (pkeys_length - 1).downto(0) do |i|
-            temp_hash = {}
             current_key = parsed_keys[i]
-            last_level = builds.pop
+            last_level = levels.pop
 
             if i == pkeys_length - 1
-              temp_hash = { current_key => val }
+              levels << { current_key => val }
             else
-              temp_hash = { current_key => last_level }
+              levels << { current_key => last_level }
             end
-
-            builds << temp_hash
           end
         end
 
         if all_params.has_key?(main_key)
-          all_params[main_key].merge!(builds.last)
+          all_params[main_key].merge!(levels.last)
         else
-          all_params.merge!({ main_key => builds.last })
+          all_params.merge!({ main_key => levels.last })
         end
       end
 
