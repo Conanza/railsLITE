@@ -36,12 +36,10 @@ module Phase5
       return {} if query_string.blank? && body.blank?
 
       all_params = {}
-
       [query_string, body].each do |param|
         next if param.blank?
 
         URI::decode_www_form(param).each do |(key, val)|
-          # all_params[key] = val
           parsed_keys = parse_key(key)
           pkeys_length = parsed_keys.length
 
@@ -63,7 +61,7 @@ module Phase5
           all_params.merge!(builds.last)
         end
       end
-      p all_params
+
       all_params
     end
 
