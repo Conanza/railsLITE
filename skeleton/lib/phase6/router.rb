@@ -1,3 +1,5 @@
+require "byebug"
+
 module Phase6
   class Route
     attr_reader :pattern, :http_method, :controller_class, :action_name
@@ -16,7 +18,7 @@ module Phase6
     # instantiate controller and call controller action
     def run(req, res)
       route_params = {}
-      match_data = pattern.match(req.path)
+      match_data = @pattern.match(req.path)
 
       if match_data
         match_data.names.each { |name| route_params[name] = match_data[name] }
