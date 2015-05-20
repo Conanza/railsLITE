@@ -35,6 +35,7 @@ end
 class CatsController < Phase5::ControllerBase
   def create
     @cat = Cat.new(params["cat"])
+
     if @cat.save
       redirect_to("/cats")
     else

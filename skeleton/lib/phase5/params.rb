@@ -10,7 +10,9 @@ module Phase5
     # You haven't done routing yet; but assume route params will be
     # passed in as a hash to `Params.new` as below:
     def initialize(req, route_params = {})
-      @params = parse_www_encoded_form(req).merge(route_params)
+      @params = parse_www_encoded_form(req.query_string)
+        .merge(parse_www_encoded_form(req.body))
+        .merge(route_params)
     end
 
     def [](key)
@@ -31,19 +33,18 @@ module Phase5
     # should return
     # { "user" => { "address" => { "street" => "main", "zip" => "89436" } } }
     def parse_www_encoded_form(www_encoded_form)
-      query_string = www_encoded_form.query_string
-      body = www_encoded_form.body
-      return {} if query_string.blank? && body.blank?
+      return {} if www_encoded_form.blank?
 
       all_params = {}
-      [query_string, body].each do |param|
-        next if param.blank?
+      URI::decode_www_form(www_encoded_form).each do |(key, val)|
+        parsed_keys = parse_key(key)
+        main_key = parsed_keys.shift
+        pkeys_length = parsed_keys.length
 
-        URI::decode_www_form(param).each do |(key, val)|
-          parsed_keys = parse_key(key)
-          pkeys_length = parsed_keys.length
-
-          builds = []
+        builds = []
+        if pkeys_length.zero?
+          builds << val
+        else
           (pkeys_length - 1).downto(0) do |i|
             temp_hash = {}
             current_key = parsed_keys[i]
@@ -57,8 +58,12 @@ module Phase5
 
             builds << temp_hash
           end
+        end
 
-          all_params.merge!(builds.last)
+        if all_params.has_key?(main_key)
+          all_params[main_key].merge!(builds.last)
+        else
+          all_params.merge!({ main_key => builds.last })
         end
       end
 
