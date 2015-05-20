@@ -13,7 +13,7 @@ class Flash
   end
 
   def [](key)
-    {}.merge(@flash_now).merge(@flash)[key]
+    @flash_now.merge(@flash)[key]
   end
 
   def []=(key, val)
@@ -30,7 +30,7 @@ class Flash
       @flash.to_json
     )
 
-    new_cookie.path = "flashorsomething"
+    new_cookie.path = "/"
 
     res.cookies << new_cookie
   end
