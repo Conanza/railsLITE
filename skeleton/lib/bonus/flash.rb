@@ -2,33 +2,35 @@ require 'json'
 require 'webrick'
 
 class Flash
-  def now
-
-  end
-end
-
-
-
-class Session
   def initialize(req)
     cookie = req
       .cookies
-      .select { |cookie| cookie.name == "_rails_lite_app" }
+      .select { |cookie| cookie.name == "_rails_lite_app_flash" }
       .first
 
-    @cookie_val = cookie.nil? ? {} : JSON.parse(cookie.value)
+    @flash_now = cookie.nil? ? {} : JSON.parse(cookie.value)
+    @flash = {}
   end
 
   def [](key)
-    @cookie_val[key]
+    {}.merge(@flash_now).merge(@flash)[key]
   end
 
   def []=(key, val)
-    @cookie_val[key] = val
+    @flash[key] = val
   end
 
-  def store_session(res)
-    new_cookie = WEBrick::Cookie.new("_rails_lite_app", @cookie_val.to_json)
+  def now
+    @flash_now
+  end
+
+  def store_flash(res)
+    new_cookie = WEBrick::Cookie.new(
+      "_rails_lite_app_flash",
+      @flash.to_json
+    )
+
+    new_cookie.path = "flashorsomething"
 
     res.cookies << new_cookie
   end

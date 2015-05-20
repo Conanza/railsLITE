@@ -26,6 +26,7 @@ class ControllerBase
     @res.status = 302
     @already_built_response = true
 
+    flash.store_flash(@res)
     session.store_session(@res)
   end
 
@@ -35,6 +36,7 @@ class ControllerBase
     @res.content_type = content_type
     @already_built_response = true
 
+    flash.store_flash(@res)
     session.store_session(@res)
   end
 
