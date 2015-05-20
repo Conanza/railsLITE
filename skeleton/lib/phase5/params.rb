@@ -38,29 +38,15 @@ module Phase5
       all_params = {}
       URI::decode_www_form(www_encoded_form).each do |(key, val)|
         parsed_keys = parse_key(key)
-        main_key = parsed_keys.shift
-        pkeys_length = parsed_keys.length
 
-        levels = []
-        if pkeys_length.zero?
-          levels << val
-        else
-          (pkeys_length - 1).downto(0) do |i|
-            current_key = parsed_keys[i]
-            last_level = levels.pop
-
-            if i == pkeys_length - 1
-              levels << { current_key => val }
-            else
-              levels << { current_key => last_level }
-            end
+        current = all_params
+        parsed_keys.each_with_index do |key, i|
+          if i == parsed_keys.length - 1
+            current[key] = val
+          else
+            current[key] ||= {}
+            current = current[key]
           end
-        end
-
-        if all_params.has_key?(main_key)
-          all_params[main_key].merge!(levels.last)
-        else
-          all_params.merge!({ main_key => levels.last })
         end
       end
 
