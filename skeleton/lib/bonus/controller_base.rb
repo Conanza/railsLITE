@@ -60,4 +60,19 @@ class ControllerBase
     send(name)
     render name unless already_built_response?
   end
+
+
+  def link_to(name, url)
+    "<a href=\"#{url}\">#{name}</a>"
+  end
+
+  def button_to(name, url, options = {})
+    default = { method: :post }.merge(options)
+
+    html = "<form action=\"#{url}\" method=\"POST\" class=\"button_to\">"
+    html += "<input type=\"hidden\" name=\"_method\" value=\"#{default[:method]}\">"
+    html += "<input type=\"submit\" value=\"#{name}\">"
+
+    html
+  end
 end
