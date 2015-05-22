@@ -1,4 +1,6 @@
 module RouteHelper
+  ROUTES = File.read("/config/routes.rb")
+  
   def get_url_helper(action)
     regex = /(new_|edit_)*(\w+)_url\(*(\d+)*\)*/
     matchdata = action.match(regex)
@@ -21,4 +23,12 @@ module RouteHelper
             end
           end
   end
+
+
+
+  def route_name_helper(resource_name)
+
+  end
+
+
 end

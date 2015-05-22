@@ -72,7 +72,7 @@ class ControllerBase
     html = "<form action=\"#{url}\" method=\"POST\" class=\"button_to\">"
     html += "<input type=\"hidden\" name=\"_method\" value=\"#{default[:method]}\">"
     html += "<input type=\"submit\" value=\"#{name}\">"
-
+    html += "</form>"
     html
   end
 end
